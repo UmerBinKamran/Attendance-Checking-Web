@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="dashboard">
+    <div class="sidebar">
+      <h2>Dashboard</h2>
+      <ul>
+        <li class="totalstudent">
+          Total Students: <span id="totalStudents">0</span>
+        </li>
+        <li class="">Present: <span id="presentCount">0</span></li>
+        <li class="">Absent: <span id="absentCount">0</span></li>
+        <li onclick="logout()" class="logout">Logout</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <h2>Attendance Panel</h2>
+
+      <input type="text" id="searchInput" placeholder="Search Roll No / Name" />
+      <button onclick="searchStudent()">Search</button>
+
+      <div class="student-box" id="studentBox" style="display: none">
+        <h3>Student Details</h3>
+        <p>Name: <span id="sName"></span></p>
+        <p>Roll No: <span id="sRoll"></span></p>
+        <p>Class: <span id="sClass"></span></p>
+
+        <button class="present" onclick="markAttendance('present')">
+          Present
+        </button>
+        <button class="absent" onclick="markAttendance('absent')">
+          Absent
+        </button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
