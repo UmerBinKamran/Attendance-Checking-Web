@@ -27,6 +27,8 @@ document.getElementById("totalStudents").innerText = students.length;
 let currentStudent = null;
 
 function searchStudent() {
+  let container = document.getElementById("studentContainer");
+  container.innerHTML = "";
   let input = document.getElementById("searchInput").value.toLowerCase();
   let data = null;
   for (let i = 0; i < students.length; i++) {
@@ -47,6 +49,12 @@ function searchStudent() {
     alert("Student not found!");
   }
 }
+var button = document.getElementById("searchBtn");
+document.addEventListener("keydown", function (event) {
+  if (event.keyCode === 13) {
+    searchStudent();
+  }
+});
 function markAttendance(status) {
   if (!currentStudent) return;
 
@@ -82,4 +90,131 @@ function updateCounts() {
 updateCounts();
 function logout() {
   window.location.href = "index.html";
+}
+function goToAttendance() {
+  let box = document.getElementById("studentContainer");
+  box.innerHTML = "";
+  let sBox = document.getElementById("studentBox");
+  sBox.style.display = "none";
+}
+function showAllStudents() {
+  let container = document.getElementById("studentContainer");
+  container.innerHTML = "";
+  let sBox = document.getElementById("studentBox");
+  sBox.style.display = "none";
+
+  for (let i = 0; i < students.length; i++) {
+    let student = students[i];
+    container.innerHTML += `
+      <div class="card">
+        <h3>${student.name}</h3>
+        <p><strong>Roll:</strong> ${student.roll}</p>
+        <p><strong>Class:</strong> ${student.class}</p>
+      </div>
+    `;
+  }
+}
+function showPresentStudents() {
+  let today = new Date().toLocaleDateString();
+  let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  let todayData = attendance[today] || [];
+
+  let presentStudents = todayData.filter((s) => s.status === "present");
+
+  let container = document.getElementById("studentContainer");
+  container.innerHTML = "";
+  let sBox = document.getElementById("studentBox");
+  sBox.style.display = "none";
+
+  if (presentStudents.length === 0) {
+    container.innerHTML = "<p>No students marked present today.</p>";
+    return;
+  }
+
+  let tableHTML = `
+    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Roll No</th>
+          <th>Class</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  for (let i = 0; i < presentStudents.length; i++) {
+    let entry = presentStudents[i];
+
+    let student = students.find((s) => s.roll === entry.roll);
+
+    if (student) {
+      tableHTML += `
+        <tr>
+          <td>${student.name}</td>
+          <td>${student.roll}</td>
+          <td>${student.class}</td>
+        </tr>
+      `;
+    }
+  }
+
+  tableHTML += `
+      </tbody>
+    </table>
+  `;
+
+  container.innerHTML = tableHTML;
+}
+function showAbsentStudents() {
+  let today = new Date().toLocaleDateString();
+  let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  let todayData = attendance[today] || [];
+
+  let absentStudents = todayData.filter((s) => s.status === "absent");
+
+  let container = document.getElementById("studentContainer");
+  container.innerHTML = "";
+  let sBox = document.getElementById("studentBox");
+  sBox.style.display = "none";
+
+  if (absentStudents.length === 0) {
+    container.innerHTML = "<p>No students marked absent today.</p>";
+    return;
+  }
+
+  let tableHTML = `
+    <table class="absentTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Roll No</th>
+          <th>Class</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  for (let i = 0; i < absentStudents.length; i++) {
+    let entry = absentStudents[i];
+
+    let student = students.find((s) => s.roll === entry.roll);
+
+    if (student) {
+      tableHTML += `
+        <tr>
+          <td>${student.name}</td>
+          <td>${student.roll}</td>
+          <td>${student.class}</td>
+        </tr>
+      `;
+    }
+  }
+
+  tableHTML += `
+      </tbody>
+    </table>
+  `;
+
+  container.innerHTML = tableHTML;
 }

@@ -10,11 +10,18 @@
     <div class="sidebar">
       <h2>Dashboard</h2>
       <ul>
-        <li class="totalstudent">
+        <li class="check totalstudent" onclick="goToAttendance()">
+          Attendance
+        </li>
+        <li class="check totalstudent" onclick="showAllStudents()">
           Total Students: <span id="totalStudents">0</span>
         </li>
-        <li class="">Present: <span id="presentCount">0</span></li>
-        <li class="">Absent: <span id="absentCount">0</span></li>
+        <li class="check pStudents" onclick="showPresentStudents()">
+          Present: <span id="presentCount">0</span>
+        </li>
+        <li class="check aStudents" onclick="showAbsentStudents()">
+          Absent: <span id="absentCount">0</span>
+        </li>
         <li onclick="logout()" class="logout">Logout</li>
       </ul>
     </div>
@@ -23,7 +30,7 @@
       <h2>Attendance Panel</h2>
 
       <input type="text" id="searchInput" placeholder="Search Roll No / Name" />
-      <button onclick="searchStudent()">Search</button>
+      <button id="searchBtn" onclick="searchStudent()">Search</button>
 
       <div class="student-box" id="studentBox" style="display: none">
         <h3>Student Details</h3>
@@ -38,6 +45,7 @@
           Absent
         </button>
       </div>
+      <div id="studentContainer" class="cards"></div>
     </div>
 
     <script src="app.js"></script>
